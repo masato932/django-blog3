@@ -6,4 +6,5 @@ urlpatterns = [
     path('post/<int:pk>/', views.PostDetailView.as_view(), name='post_detail'), # 追加
     path('post/new/', views.CreatePostView.as_view(), name='post_new'), # 追加
     path('post/<int:pk>/edit/', views.PostEditView.as_view(), name='post_edit'), # 追加
+    path('post/<int:pk>/delete/', views.PostDeleteView.as_view(), name='post_delete'), # 追加
 ]

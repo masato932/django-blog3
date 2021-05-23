@@ -68,3 +68,14 @@ class PostEditView(LoginRequiredMixin, View):
         return render(request, 'app/post_form.html', {
             'form': form
         })
+class PostDeleteView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        post_data = Post.objects.get(id=self.kwargs['pk'])
+        return render(request, 'app/post_delete.html', {
+            'post_data': post_data
+        })
+
+    def post(self, request, *args, **kwargs):
+        post_data = Post.objects.get(id=self.kwargs['pk'])
+        post_data.delete()
+        return redirect('index')
