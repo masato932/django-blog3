@@ -29,14 +29,16 @@ class CreatePostView(LoginRequiredMixin, View):
         form = PostForm(request.POST or None)
 
         if form.is_valid():
-            post_data = Post()
+            post_data = Post() #models.pyのPostclassをインスタンス化
             post_data.author = request.user
             post_data.title = form.cleaned_data['title']
             post_data.content = form.cleaned_data['content']
+            if request.FILES:
+                post_data.image = request.FILES.get('image') # 追加
             post_data.save()
             return redirect('post_detail', post_data.id)
 
-        return render(request, 'app/post_form.html', {
+        return render(request, 'app/post_form.html', { #入力がミスっていた時にフォーム画面が再度出る
             'form': form
         })
 class PostEditView(LoginRequiredMixin, View):
@@ -48,6 +50,7 @@ class PostEditView(LoginRequiredMixin, View):
             initial={
                 'title': post_data.title,
                 'content': post_data.content,
+                'image': post_data.image, # 追加
             }
         )
 
@@ -59,9 +62,11 @@ class PostEditView(LoginRequiredMixin, View):
         form = PostForm(request.POST or None)
 
         if form.is_valid():
-            post_data = Post.objects.get(id=self.kwargs['pk'])
+            post_data = Post.objects.get(id=self.kwargs['pk']) #データベースから取り出した情報
             post_data.title = form.cleaned_data['title']
             post_data.content = form.cleaned_data['content']
+            if request.FILES:
+                post_data.image = request.FILES.get('image') # 追加
             post_data.save()
             return redirect('post_detail', self.kwargs['pk'])
 

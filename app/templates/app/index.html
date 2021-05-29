@@ -5,10 +5,13 @@
 <div class="row my-4">
     <div class="col-md-8">
         {% for post in post_data %}
-            <div class="card mb-4">
+            <div class="card mb-4 index">
+                {% if post.image %}
+                    <img class="card-img-top index-img" src="{{ post.image.url }}" alt="">
+                {% endif %}
                 <div class="card-body">
                     <h2 class="card-title">{{ post.title }}</h2>
-                    <p class="card-text">{{ post.content|truncatechars:100 }}</p>
+                    <p class="card-text">{{ post.content|truncatechars:1000 }}</p>
                     <div class="btn btn-warning">詳細</div>
                 </div>
                 <div class="card-footer text-muted">
