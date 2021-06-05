@@ -1,8 +1,16 @@
 from django import forms
+from .models import Category
 
 
 class PostForm(forms.Form):
-    title = forms.CharField(max_length=30, label='タイトル')
+    category_data = Category.objects.all()
+    # category_data = []
+    category_choice = {}
+    for category in category_data:
+        category_choice[category] = category
+
+    title = forms.CharField(max_length=50, label='タイトル')
+    category = forms.ChoiceField(label='カテゴリ', widget=forms.Select, choices=list(category_choice.items())) # 追加
     content = forms.CharField(label='内容', widget=forms.Textarea())
-    image = forms.ImageField(label='イメージ画像', required=False) # 追加
+    image = forms.ImageField(label='イメージ画像', required=False)
     date = forms.DateTimeField(label='日時',required=True,widget=forms.DateTimeInput(attrs={"type": "datetime-local"}),input_formats=['%Y-%m-%dT%H:%M'])
